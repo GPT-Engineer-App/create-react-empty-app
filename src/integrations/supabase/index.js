@@ -1,4 +1,3 @@
-```javascript
 import { createClient } from '@supabase/supabase-js';
 import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -37,4 +36,117 @@ Comments // table: comments
     event_id: number // foreign key to Events
 
 Users // table: users
-    id
+    id: number
+    created_at: string
+    email: string
+    password: string
+
+*/
+
+// Hooks for Events table
+export const useEvents = () => useQuery({
+    queryKey: ['events'],
+    queryFn: () => fromSupabase(supabase.from('events').select('*')),
+});
+
+export const useAddEvent = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (newEvent) => fromSupabase(supabase.from('events').insert([newEvent])),
+        onSuccess: () => {
+            queryClient.invalidateQueries('events');
+        },
+    });
+};
+
+export const useUpdateEvent = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (updatedEvent) => fromSupabase(supabase.from('events').update(updatedEvent).eq('id', updatedEvent.id)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('events');
+        },
+    });
+};
+
+export const useDeleteEvent = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (eventId) => fromSupabase(supabase.from('events').delete().eq('id', eventId)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('events');
+        },
+    });
+};
+
+// Hooks for Comments table
+export const useComments = () => useQuery({
+    queryKey: ['comments'],
+    queryFn: () => fromSupabase(supabase.from('comments').select('*')),
+});
+
+export const useAddComment = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (newComment) => fromSupabase(supabase.from('comments').insert([newComment])),
+        onSuccess: () => {
+            queryClient.invalidateQueries('comments');
+        },
+    });
+};
+
+export const useUpdateComment = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (updatedComment) => fromSupabase(supabase.from('comments').update(updatedComment).eq('id', updatedComment.id)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('comments');
+        },
+    });
+};
+
+export const useDeleteComment = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (commentId) => fromSupabase(supabase.from('comments').delete().eq('id', commentId)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('comments');
+        },
+    });
+};
+
+// Hooks for Users table
+export const useUsers = () => useQuery({
+    queryKey: ['users'],
+    queryFn: () => fromSupabase(supabase.from('users').select('*')),
+});
+
+export const useAddUser = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (newUser) => fromSupabase(supabase.from('users').insert([newUser])),
+        onSuccess: () => {
+            queryClient.invalidateQueries('users');
+        },
+    });
+};
+
+export const useUpdateUser = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (updatedUser) => fromSupabase(supabase.from('users').update(updatedUser).eq('id', updatedUser.id)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('users');
+        },
+    });
+};
+
+export const useDeleteUser = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (userId) => fromSupabase(supabase.from('users').delete().eq('id', userId)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('users');
+        },
+    });
+};
